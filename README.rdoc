@@ -2,8 +2,8 @@
 
 == Usage
 
-require 'png2swf'
-Png2swf::DefineBitsLossless2.image2data_from_file('path/to/png')
+1. require 'png2swf'
+2. Png2swf::DefineBitsLossless2.image2data_from_file('path/to/png')
 
 == About
 
