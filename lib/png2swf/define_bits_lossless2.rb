@@ -1,5 +1,5 @@
 require 'base64'
-require 'chunky_png'
+require 'oily_png'
 require 'png2swf/oily_png2swf'
 
 module Png2swf
