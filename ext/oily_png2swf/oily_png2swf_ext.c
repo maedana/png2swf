@@ -28,9 +28,9 @@ VALUE bitmap_data(VALUE vself, VALUE vpixels) {
     for (i=0; i<pixel_size; i++) {
         color = NUM2ULONG((RARRAY(vpixels)->ptr[i]));
         a = alpha(color);
-        r = (unsigned char)((red(color) * a) / 255.0);
-        g = (unsigned char)((green(color) * a) / 255.0);
-        b = (unsigned char)((blue(color)) * a / 255.0);
+        r = (unsigned char)(red(color) * (a / 255));
+        g = (unsigned char)(green(color) * (a / 255));
+        b = (unsigned char)(blue(color) * (a / 255));
         data[data_index] = a;
         data[data_index+1] = r;
         data[data_index+2] = g;
