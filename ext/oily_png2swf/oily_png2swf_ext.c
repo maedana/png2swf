@@ -21,21 +21,22 @@ VALUE bitmap_data(VALUE vself, VALUE vpixels) {
     int pixel_size = RARRAY(vpixels)->len;
     unsigned long color;
     int a; // alpha for swf bitmap data
+    float a_dash;
     unsigned char r, g, b; // red, green, blue for swf bitmap data
     unsigned char data[pixel_size * 4]; // argb for swf bitmap data
     int i;
     int data_index = 0;
-    for (i=0; i<pixel_size; i++) {
+    for (i=0; i<pixel_size; ++i) {
         color = NUM2ULONG((RARRAY(vpixels)->ptr[i]));
         a = alpha(color);
-        r = (unsigned char)(red(color) * (a / 255));
-        g = (unsigned char)(green(color) * (a / 255));
-        b = (unsigned char)(blue(color) * (a / 255));
-        data[data_index] = a;
-        data[data_index+1] = r;
-        data[data_index+2] = g;
-        data[data_index+3] = b;
-        data_index+=4;
+        a_dash = a / 255.0;
+        r = (unsigned char)(red(color) * a_dash);
+        g = (unsigned char)(green(color) * a_dash);
+        b = (unsigned char)(blue(color) * a_dash);
+        data[data_index] = a; ++data_index;
+        data[data_index] = r; ++data_index;
+        data[data_index] = g; ++data_index;
+        data[data_index] = b; ++data_index;
     }
     VALUE vdata = rb_str_new(0,0); // 戻り値用にrubyの空文字を作成 vdata = '' と同じ
     rb_str_cat(vdata, data, (pixel_size * 4)); // rubyの文字列としてバイナリデータを連結
