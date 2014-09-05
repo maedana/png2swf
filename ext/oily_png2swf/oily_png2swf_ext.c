@@ -18,7 +18,7 @@ int alpha(unsigned long color) {
 }
 
 VALUE bitmap_data(VALUE vself, VALUE vpixels) {
-    int pixel_size = RARRAY(vpixels)->len;
+    int pixel_size = RARRAY_LEN(vpixels);
     unsigned long color;
     int a; // alpha for swf bitmap data
     float a_dash;
@@ -27,7 +27,7 @@ VALUE bitmap_data(VALUE vself, VALUE vpixels) {
     int i;
     int data_index = 0;
     for (i=0; i<pixel_size; ++i) {
-        color = NUM2ULONG((RARRAY(vpixels)->ptr[i]));
+        color = NUM2ULONG((RARRAY_PTR(vpixels)[i]));
         a = alpha(color);
         a_dash = a / 255.0;
         r = (unsigned char)(red(color) * a_dash);
@@ -38,12 +38,13 @@ VALUE bitmap_data(VALUE vself, VALUE vpixels) {
         data[data_index] = g; ++data_index;
         data[data_index] = b; ++data_index;
     }
-    VALUE vdata = rb_str_new(0,0); // 戻り値用にrubyの空文字を作成 vdata = '' と同じ
+    VALUE vdata;
+    vdata = rb_str_new(0,0); // 戻り値用にrubyの空文字を作成 vdata = '' と同じ
     rb_str_cat(vdata, data, (pixel_size * 4)); // rubyの文字列としてバイナリデータを連結
     return vdata;
 }
 
-Init_oily_png2swf() {
+void Init_oily_png2swf() {
     VALUE Png2swf = rb_define_module("OilyPng2swf");
 
     VALUE DefineBitsLossless2 = rb_define_module_under(Png2swf, "DefineBitsLossless2");
